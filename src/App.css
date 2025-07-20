@@ -1,0 +1,21 @@
+/* App.css - Use sparingly when working with Tailwind */
+
+/* This file can be used for very broad, application-wide styles
+   that are not easily handled by Tailwind utility classes directly
+   on components. For example, custom scrollbar styles, or very
+   specific global resets not covered by Tailwind's base. */
+
+/* Example: Smooth scrolling for the entire page */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Example: A very basic container style if you had one */
+/* .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+} */
+
+/* Avoid adding styles here that you can achieve with Tailwind classes
+   in your React components (e.g., colors, spacing, typography, flexbox). */

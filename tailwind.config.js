@@ -1,10 +1,17 @@
+// tailwind.config.js
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
   content: [
-    "./src/**/*.{js,jsx,ts,tsx}",
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}", // Make sure this path is correct for your project
   ],
   theme: {
-    extend: {},
+    extend: {
+      // You can extend themes here, e.g., for custom fonts
+      fontFamily: {
+        inter: ['Inter', 'sans-serif'],
+      },
+    },
   },
   plugins: [],
 }
