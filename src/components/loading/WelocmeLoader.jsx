@@ -31,7 +31,7 @@ const WelcomeLoader = () => {
 
       // Navigate after splash ends
       setTimeout(() => {
-        navigate("/");
+        navigate("/home");
       }, 500);
     }, 5000);
 
@@ -95,7 +95,7 @@ const WelcomeLoader = () => {
               left: splashPosition.x,
               width: 100,
               height: 100,
-              backgroundColor: "white",
+              backgroundColor: "#111827",
               borderRadius: "50%",
               transform: "translate(-50%, -50%)",
               zIndex: 60,
