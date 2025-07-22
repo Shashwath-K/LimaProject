@@ -98,7 +98,7 @@ const About = () => {
             </section>
             {/* Social Cards Section */}
              <section className="mt-16">
-            <h3 className="text-xl font-semibold text-center mb-6">Connect with me</h3>
+            <h3 className="text-xl font-semibold text-white text-center mb-6">Connect with me</h3>
             <SocialCardGrid>
                 {socials.map((s) => (
                 <SocialCard

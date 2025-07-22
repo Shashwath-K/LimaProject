@@ -4,24 +4,36 @@ import styled from 'styled-components';
 // Grid wrapper for all social cards
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 90px;
+  gap: 2rem; /* Reduced gap for better spacing */
   justify-content: center;
   max-width: 1200px;
   margin: 0 auto;
+  padding: 0 1rem; /* Add some padding for mobile */
+
+  /* Mobile view: 1 card per row (default) */
+  grid-template-columns: 1fr;
+
+  /* Tablet view: 2 cards per row */
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Desktop view: 3 cards per row */
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
 `;
 
 // Card styling
 const Card = styled.div`
   position: relative;
-  width: 380px;
-  height: 220px; /* Increased height */
+  /* REMOVED fixed width: 380px; */
+  height: 220px;
   padding: 24px;
   background: #20203aff;
   border-radius: 16px;
   overflow: hidden;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px;
-  margin: 1px;
   cursor: pointer;
   transition: transform 0.3s ease, background 0.3s ease;
 
@@ -34,12 +46,14 @@ const Card = styled.div`
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-30%, -30%);
+    transform: translate(-50%, -50%); /* Centered properly */
     font-size: 36px;
     color: #fff;
     z-index: 1;
     transition: all 0.4s ease;
   }
+  
+  /* ... rest of your Card CSS remains the same ... */
 
   &:hover .icon-container {
     top: 20px;
@@ -55,7 +69,8 @@ const Card = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 32px 16px 32px; /* More bottom padding */
+    /* Vertically center the info content */
+    height: 100%; 
     opacity: 0;
     transition: opacity 0.3s ease;
     z-index: 0;
@@ -94,7 +109,6 @@ const Card = styled.div`
     opacity: 1;
   }
 `;
-
 // Platform-specific background colors
 const platformColors = {
   facebook: '#1877F2',
