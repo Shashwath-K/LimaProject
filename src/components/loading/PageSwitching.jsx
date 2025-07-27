@@ -5,19 +5,35 @@ import React from 'react';
 
 const overlayVariants = {
   initial: { opacity: 0 },
-  animate: { opacity: 1, transition: { duration: 0.2 } },
+  animate: { opacity: 1, transition: { duration: 0.3 } },
   exit: { opacity: 0, transition: { duration: 0.3 } },
 };
 
-const barVariants = {
-  initial: { scaleX: 0 },
+const blobVariants = {
   animate: {
-    scaleX: 1,
+    scale: [1, 1.1, 1],
+    borderRadius: [
+      "30% 70% 70% 30% / 30% 30% 70% 70%",
+      "50% 50% 50% 50% / 50% 50% 50% 50%",
+      "30% 70% 70% 30% / 30% 30% 70% 70%",
+    ],
+    rotate: [0, 180, 360],
     transition: {
-      duration: 1,
-      ease: [0.4, 0, 0.2, 1],
+      duration: 3,
       repeat: Infinity,
-      repeatType: "mirror",
+      ease: "easeInOut",
+    },
+  },
+};
+
+const glowVariants = {
+  animate: {
+    scale: [1, 1.2, 1],
+    opacity: [0.6, 0.3, 0.6],
+    transition: {
+      duration: 2,
+      repeat: Infinity,
+      ease: "easeInOut",
     },
   },
 };
@@ -27,23 +43,25 @@ const PageSwitching = ({ isLoading = false }) => {
     <AnimatePresence>
       {isLoading && (
         <motion.div
-          className="fixed inset-0 z-50 bg-black bg-opacity-70 flex items-center justify-center"
+          className="fixed inset-0 z-50 bg-black bg-opacity-80 flex items-center justify-center"
           variants={overlayVariants}
           initial="initial"
           animate="animate"
           exit="exit"
         >
-          <motion.div className="flex space-x-2">
-            {[...Array(3)].map((_, i) => (
-              <motion.div
-                key={i}
-                className="w-2 h-16 bg-white rounded-full origin-bottom"
-                variants={barVariants}
-                initial="initial"
-                animate="animate"
-              />
-            ))}
-          </motion.div>
+          {/* Glow background */}
+          <motion.div
+            className="absolute w-72 h-72 rounded-full bg-purple-600 blur-3xl opacity-50"
+            variants={glowVariants}
+            animate="animate"
+          />
+
+          {/* Morphing blob */}
+          <motion.div
+            className="relative w-24 h-24 bg-gradient-to-br from-indigo-500 to-purple-500"
+            variants={blobVariants}
+            animate="animate"
+          />
         </motion.div>
       )}
     </AnimatePresence>
