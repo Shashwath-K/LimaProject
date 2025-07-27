@@ -1,72 +1,49 @@
-import React from 'react';
+// PageSwitching.jsx
+
 import { motion, AnimatePresence } from 'framer-motion';
+import React from 'react';
 
-// Variants for the container of the dots
-const containerVariants = {
+const overlayVariants = {
   initial: { opacity: 0 },
-  animate: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1, // Stagger the animation of child elements
-      delayChildren: 0.2,   // Delay before child animations start
-    },
-  },
-  exit: { opacity: 0, transition: { duration: 0.3 } }, // Quick fade out
+  animate: { opacity: 1, transition: { duration: 0.2 } },
+  exit: { opacity: 0, transition: { duration: 0.3 } },
 };
 
-// Variants for each individual dot
-const dotVariants = {
-  initial: { y: "0%", opacity: 0.5 },
+const barVariants = {
+  initial: { scaleX: 0 },
   animate: {
-    y: ["0%", "-50%", "0%"], // Move up and down
-    opacity: [0.5, 1, 0.5],  // Fade in and out slightly
+    scaleX: 1,
     transition: {
-      duration: 1.2,        // Animation duration for one cycle
-      repeat: Infinity,     // Loop indefinitely
-      ease: "easeInOut",    // Smooth easing
-      repeatDelay: 0.1,     // Small delay before repeating
+      duration: 1,
+      ease: [0.4, 0, 0.2, 1],
+      repeat: Infinity,
+      repeatType: "mirror",
     },
   },
 };
 
-/**
- * PageSwitching component displays a dynamic loading animation.
- * It's designed to be used when transitioning between pages.
- * The loading dots are white, and the background is a semi-transparent gray-900.
- *
- * @param {object} props - The component props.
- * @param {boolean} props.isVisible - Controls the visibility of the loading animation.
- */
-const PageSwitching = ({ isVisible }) => {
+const PageSwitching = ({ isLoading = false }) => {
   return (
     <AnimatePresence>
-      {isVisible && (
+      {isLoading && (
         <motion.div
-          className="fixed inset-0 bg-gray-900 bg-opacity-90 flex items-center justify-center z-[9999]" // High z-index to ensure it's on top
-          variants={containerVariants}
+          className="fixed inset-0 z-50 bg-black bg-opacity-70 flex items-center justify-center"
+          variants={overlayVariants}
           initial="initial"
           animate="animate"
           exit="exit"
         >
-          <div className="flex space-x-3">
-            {/* Dot 1 */}
-            <motion.span
-              className="block w-4 h-4 rounded-full bg-white"
-              variants={dotVariants}
-            ></motion.span>
-            {/* Dot 2 */}
-            <motion.span
-              className="block w-4 h-4 rounded-full bg-white"
-              variants={dotVariants}
-              transition={{ ...dotVariants.animate.transition, delay: 0.2 }} // Stagger delay for second dot
-            ></motion.span>
-            {/* Dot 3 */}
-            <motion.span
-              className="block w-4 h-4 rounded-full bg-white"
-              variants={dotVariants}
-              transition={{ ...dotVariants.animate.transition, delay: 0.4 }} // Stagger delay for third dot
-            ></motion.span>
-          </div>
+          <motion.div className="flex space-x-2">
+            {[...Array(3)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="w-2 h-16 bg-white rounded-full origin-bottom"
+                variants={barVariants}
+                initial="initial"
+                animate="animate"
+              />
+            ))}
+          </motion.div>
         </motion.div>
       )}
     </AnimatePresence>
