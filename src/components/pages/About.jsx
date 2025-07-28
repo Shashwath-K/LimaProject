@@ -173,7 +173,6 @@ const About = () => {
                 ))}
               </SocialCardGrid>
             </motion.section>
-
             {/* === PROJECTS === */}
             <motion.section
               className="mb-24"
@@ -183,19 +182,34 @@ const About = () => {
               variants={sectionVariants}
             >
               <h2 className="text-3xl font-bold text-center mb-10">My Recent Work</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                 {projects.map((project, index) => (
-                  <div key={index} className="bg-gray-800 rounded-xl overflow-hidden shadow-lg group hover:-translate-y-2 transition-all duration-300">
-                    <img src={project.imageUrl} alt={project.title} className="w-full h-48 object-cover" />
-                    <div className="p-6">
-                      <h3 className="text-xl font-bold mb-2">{project.title}</h3>
-                      <p className="text-gray-400 mb-4">{project.description}</p>
-                      <div className="flex justify-end space-x-4">
-                        <a href={project.liveUrl} className="flex items-center space-x-2 text-gray-300 hover:text-indigo-400">
-                          <FaExternalLinkAlt /> <span>Live Demo</span>
+                  <div
+                    key={index}
+                    className="bg-gray-900 rounded-xl overflow-hidden shadow-xl border border-gray-700 group hover:-translate-y-2 transition-all duration-300"
+                  >
+                    <div className="aspect-[16/9]">
+                      <img
+                        src={project.imageUrl}
+                        alt={project.title}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div className="p-6 flex flex-col justify-between h-full">
+                      <h3 className="text-xl font-bold mb-2 text-white">{project.title}</h3>
+                      <p className="text-gray-400 mb-4 text-sm">{project.description}</p>
+                      <div className="flex justify-between items-center mt-auto">
+                        <a
+                          href={project.liveUrl}
+                          className="flex items-center gap-2 text-sm text-indigo-400 hover:underline"
+                        >
+                          <FaExternalLinkAlt /> Live Demo
                         </a>
-                        <a href={project.sourceUrl} className="flex items-center space-x-2 text-gray-300 hover:text-indigo-400">
-                          <FaCode /> <span>Source</span>
+                        <a
+                          href={project.sourceUrl}
+                          className="flex items-center gap-2 text-sm text-indigo-400 hover:underline"
+                        >
+                          <FaCode /> Source
                         </a>
                       </div>
                     </div>
@@ -215,13 +229,17 @@ const About = () => {
               <h2 className="text-3xl font-bold text-center mb-10">Skills & Expertise</h2>
               <div className="max-w-4xl mx-auto flex flex-wrap justify-center gap-4">
                 {skills.map((skill, index) => (
-                  <div key={index} className="flex items-center bg-gray-800/80 rounded-lg px-4 py-2 shadow-md">
-                    <span className="mr-3 text-2xl">{skill.icon}</span>
-                    <span className="font-semibold text-gray-200">{skill.name}</span>
+                  <div
+                    key={index}
+                    className="flex items-center bg-gray-800 rounded-full px-5 py-2 shadow-sm border border-gray-700 hover:shadow-md transition"
+                  >
+                    <span className="mr-3 text-xl">{skill.icon}</span>
+                    <span className="font-medium text-gray-200 text-sm">{skill.name}</span>
                   </div>
                 ))}
               </div>
             </motion.section>
+
 
             {/* === CONTACT === */}
             <motion.section
