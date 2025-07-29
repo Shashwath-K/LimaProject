@@ -44,7 +44,7 @@ const textVariants = {
   exit: { opacity: 0, y: -10 },
 };
 
-const loadingMessages = ["Loading_text#1", "Loading_text#2", "Loading_text#3"];
+const loadingMessages = ["Loading...", "Still Loading..", "Why is it taking so long?", "Almost there..."];
 
 const PageSwitching = ({ isLoading = false }) => {
   const [currentText, setCurrentText] = useState(0);
