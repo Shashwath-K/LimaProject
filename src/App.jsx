@@ -6,6 +6,7 @@ import WelcomeLoader from './components/loading/welocmeLoader';
 import PlayGround from './components/pages/Playground';
 import Header from './components/Navigation/Header';
 import Footer from './components/Navigation/Footer';
+import TimeTracker from './components/pages/TimeTracker';
 import PageSwitching from './components/loading/PageSwitching';
 import About from './components/pages/About';
 const LayoutWrapper = ({ children }) => {
@@ -36,9 +37,9 @@ const App = () => {
           <Route path="/loading" element={<PageSwitching isLoading={true} />} />
           <Route path="/playground" element={<PlayGround />} />
           <Route path="/header" element={<Header />} />
+          <Route path="/time-tracker" element={<TimeTracker />} />
           <Route path="/about" element={<About />} />
           <Route path="/footer" element={<Footer />} />
-          {/* Add more routes as needed */}
         </Routes>
         </LayoutWrapper>
       </Router>
