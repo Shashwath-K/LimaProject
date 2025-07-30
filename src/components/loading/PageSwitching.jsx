@@ -80,7 +80,7 @@ const PageSwitching = ({ isLoading = false }) => {
           <div className="relative flex flex-col items-center space-y-6 z-10">
             {/* Morphing blob */}
             <motion.div
-              className="w-24 h-24 bg-gradient-to-br from-indigo-500 to-purple-500"
+              className="w-24 h-24 bg-gradient-to-br from-blue-500 to-purple-500"
               variants={blobVariants}
               animate="animate"
             />
