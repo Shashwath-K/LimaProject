@@ -10,7 +10,7 @@ const PlayGround = () => {
             opacity: 1,
             transition: {
                 duration: 2, // Duration for the drawing animation
-                ease: "easeInOut",
+                ease: "easeIn",
                 delay: 0.8 // Start drawing shortly after the screen appears
             }
         },
