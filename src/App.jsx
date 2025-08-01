@@ -5,10 +5,13 @@ import Homepage from './components/pages/Homepage';
 import WelcomeLoader from './components/loading/welocmeLoader';
 import PlayGround from './components/pages/Playground';
 import Header from './components/Navigation/Header';
+import SwooshLoading from './components/loading/SwooshLoading';
+import HamsterLoading from './components/loading/HamsterLoading';
 import Footer from './components/Navigation/Footer';
 import TimeTracker from './components/pages/TimeTracker';
 import PageSwitching from './components/loading/PageSwitching';
 import About from './components/pages/About';
+import SwooshLoading from './components/loading/SwooshLoading';
 const LayoutWrapper = ({ children }) => {
   const location = useLocation();
   const currentPath = location.pathname;
