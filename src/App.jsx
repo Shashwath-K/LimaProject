@@ -7,6 +7,7 @@ import PlayGround from './components/pages/Playground';
 import Header from './components/Navigation/Header';
 import SwooshLoading from './components/loading/SwooshLoading';
 import HamsterLoading from './components/loading/HamsterLoading';
+import JsPlayground from './components/pages/Playground/JsPlayground';
 import Footer from './components/Navigation/Footer';
 import TimeTracker from './components/pages/TimeTracker';
 import PageSwitching from './components/loading/PageSwitching';
@@ -38,6 +39,7 @@ const App = () => {
           <Route path="/" element={<WelcomeLoader />} />
           <Route path="/loading" element={<PageSwitching isLoading={true} />} />
           <Route path="/playground" element={<PlayGround />} />
+          <Route path="/playground/js" element={<JsPlayground />} />
           <Route path="/header" element={<Header />} />
           <Route path="/time-tracker" element={<TimeTracker />} />
           <Route path="/about" element={<About />} />
