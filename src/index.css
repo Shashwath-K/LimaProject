@@ -1,5 +1,6 @@
 /* Import Google Font - Inter */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&display=swap');
 @tailwind base;
 @tailwind components;
@@ -15,8 +16,7 @@ html, body, #root {
 }
 
 body {
-  font-family: 'Inter', sans-serif;
-  font-family: 'Playfair Display', serif;
+  font-family: 'Montserrat', serif;
 }
 
 /* Keep other global styles if they are truly global and not conflicting with component-level Tailwind */

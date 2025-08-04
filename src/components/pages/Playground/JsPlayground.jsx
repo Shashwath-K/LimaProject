@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
-import Editor from "@monaco-editor/react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
+import CodeEditor from "./components/CodeEditor";
+import Terminal from "./components/Terminal";
+import Console from "./components/Console";
 
 const languages = [
   { label: "JavaScript", value: "javascript" },
@@ -10,7 +12,7 @@ const languages = [
 
 const JsPlayground = () => {
   const [lang, setLang] = useState("javascript");
-  const [code, setCode] = useState("// console.log('Hello, World!');\n\nfunction greet() {\n  console.log('Welcome to the JS Playground!');\n}\n\ngreet();");
+  const [code, setCode] = useState("// Write your code here");
   const [panelType, setPanelType] = useState(null); // 'console' | 'terminal' | null
   const [output, setOutput] = useState("");
 
@@ -87,44 +89,24 @@ const JsPlayground = () => {
         </button>
       </div>
 
-      {/* Editor & Panel Section */}
+      {/* Main Layout */}
       <div className="flex flex-1 relative overflow-hidden">
-        {/* Code Editor */}
-        <motion.div
-          className="bg-white"
-          animate={{ width: panelType ? "60%" : "100%" }}
-          transition={{ duration: 0.5 }}
-          style={{ height: "100%" }}
-        >
-          <Editor
-            height="100%"
-            width="100%"
-            language={lang}
-            theme="vs-dark"
-            value={code}
-            onChange={(value) => setCode(value || "")}
-          />
-        </motion.div>
+        <CodeEditor
+          code={code}
+          onChange={setCode}
+          language={lang}
+          isShrunk={panelType !== null}
+        />
 
-        {/* Side Panel (Console or Terminal) */}
         <AnimatePresence>
-          {panelType && (
-            <motion.div
-              key={panelType}
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ duration: 0.5 }}
-              className={`bg-gray-900 text-white p-4 overflow-auto z-10`}
-              style={{ width: "40%", height: "100%" }}
-            >
-              <h2 className="text-lg font-semibold mb-2">
-                {panelType === "console" ? "Console" : "Terminal"}
-              </h2>
-              <pre className="whitespace-pre-wrap">{output || "No output yet."}</pre>
-            </motion.div>
-          )}
+            {panelType === "console" && (
+                <Console output={output} onClear={() => setOutput("")} />
+            )}
+            {panelType === "terminal" && (
+                <Terminal output={output} onClear={() => setOutput("")} />
+            )}
         </AnimatePresence>
+
       </div>
     </div>
   );
