@@ -11,7 +11,6 @@ import Footer from './components/Navigation/Footer';
 import TimeTracker from './components/pages/TimeTracker';
 import PageSwitching from './components/loading/PageSwitching';
 import About from './components/pages/About';
-import SwooshLoading from './components/loading/SwooshLoading';
 const LayoutWrapper = ({ children }) => {
   const location = useLocation();
   const currentPath = location.pathname;
