@@ -11,7 +11,6 @@ app.use(json());
 
 app.post('/save', (req, res) => {
     const { task, duration, timestamp } = req.body;
-
     const date = new Date(timestamp);
     const weekNumber = getWeekNumber(date);
     const month = date.toLocaleString('default', { month: 'long' });
