@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import CodeEditor from "./components/CodeEditor";
 import Terminal from "./components/Terminal";
 import Console from "./components/Console";
@@ -63,16 +63,10 @@ const JsPlayground = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen w-screen bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
-      {/* Top Toolbar */}
-      <motion.div
-        className="p-4 bg-white/80 backdrop-blur-md shadow-lg flex justify-center gap-4 items-center flex-wrap rounded-b-2xl"
-        initial={{ y: -80, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ type: "spring", stiffness: 80 }}
-      >
+    <div className="flex flex-col h-screen w-screen bg-gray-100 overflow-hidden">
+      <div className="p-4 bg-white shadow-md flex justify-center gap-4 items-center flex-wrap">
         <select
-          className="border border-gray-300 rounded-xl px-4 py-2 text-sm shadow-sm hover:shadow-md transition focus:ring-2 focus:ring-indigo-400 outline-none"
+          className="border rounded px-3 py-1"
           value={lang}
           onChange={(e) => setLang(e.target.value)}
         >
@@ -83,105 +77,59 @@ const JsPlayground = () => {
           ))}
         </select>
 
-        <button
-          className="px-4 py-2 rounded-xl bg-gray-300 text-gray-600 cursor-not-allowed"
-          disabled
-        >
+        <button className="px-4 py-1 rounded bg-gray-300 text-gray-600 cursor-not-allowed" disabled>
           NULL
         </button>
 
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="px-4 py-2 rounded-xl bg-blue-500 text-white shadow hover:bg-blue-600 transition"
+        <button
+          className="px-4 py-1 rounded bg-blue-500 text-white"
           onClick={handleRun}
         >
           Run Code
-        </motion.button>
+        </button>
 
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="px-4 py-2 rounded-xl bg-green-600 text-white shadow hover:bg-green-700 transition"
+        <button
+          className="px-4 py-1 rounded bg-green-600 text-white"
           onClick={handleSave}
         >
           Save Code
-        </motion.button>
+        </button>
 
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className={`px-4 py-2 rounded-xl shadow transition ${
-            panelType === "console"
-              ? "bg-indigo-500 text-white"
-              : "bg-gray-200 text-gray-700"
+        <button
+          className={`px-4 py-1 rounded ${
+            panelType === "console" ? "bg-indigo-500 text-white" : "bg-gray-200"
           }`}
-          onClick={() =>
-            setPanelType(panelType === "console" ? null : "console")
-          }
+          onClick={() => setPanelType(panelType === "console" ? null : "console")}
         >
           Show Console
-        </motion.button>
+        </button>
 
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className={`px-4 py-2 rounded-xl shadow transition ${
-            panelType === "terminal"
-              ? "bg-indigo-500 text-white"
-              : "bg-gray-200 text-gray-700"
+        <button
+          className={`px-4 py-1 rounded ${
+            panelType === "terminal" ? "bg-indigo-500 text-white" : "bg-gray-200"
           }`}
-          onClick={() =>
-            setPanelType(panelType === "terminal" ? null : "terminal")
-          }
+          onClick={() => setPanelType(panelType === "terminal" ? null : "terminal")}
         >
           Show Terminal
-        </motion.button>
-      </motion.div>
+        </button>
+      </div>
 
-      {/* Main Content */}
       <div className="flex flex-1 relative overflow-hidden">
-        <motion.div
-          className="flex-1"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.4 }}
-        >
-          <CodeEditor
-            code={code}
-            onChange={setCode}
-            language={lang}
-            isShrunk={panelType !== null}
-          />
-        </motion.div>
+        <CodeEditor
+          code={code}
+          onChange={setCode}
+          language={lang}
+          isShrunk={panelType !== null}
+        />
 
         <AnimatePresence>
-  {panelType === "console" && (
-    <motion.div
-      key="console"
-      className="flex-shrink-0 w-full md:w-1/3 lg:w-1/4 h-full bg-white/90 backdrop-blur-lg rounded-l-2xl shadow-lg overflow-hidden"
-      initial={{ x: "100%", opacity: 0 }}
-      animate={{ x: 0, opacity: 1 }}
-      exit={{ x: "100%", opacity: 0 }}
-      transition={{ type: "spring", stiffness: 80 }}
-    >
-      <Console output={output} onClear={handleClear} />
-    </motion.div>
-  )}
-  {panelType === "terminal" && (
-    <motion.div
-      key="terminal"
-      className="flex-shrink-0 w-full md:w-1/3 lg:w-1/4 h-full bg-white/90 backdrop-blur-lg rounded-l-2xl shadow-lg overflow-hidden"
-      initial={{ y: "100%", opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      exit={{ y: "100%", opacity: 0 }}
-      transition={{ type: "spring", stiffness: 80 }}
-    >
-      <Terminal output={output} onClear={handleClear} />
-    </motion.div>
-  )}
-</AnimatePresence>
-
+          {panelType === "console" && (
+            <Console output={output} onClear={handleClear} />
+          )}
+          {panelType === "terminal" && (
+            <Terminal output={output} onClear={handleClear} />
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );
