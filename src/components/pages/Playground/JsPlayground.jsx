@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import CodeEditor from "./components/CodeEditor";
 import Terminal from "./components/Terminal";
 import Console from "./components/Console";
@@ -63,10 +63,16 @@ const JsPlayground = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen w-screen bg-gray-100 overflow-hidden">
-      <div className="p-4 bg-white shadow-md flex justify-center gap-4 items-center flex-wrap">
+    <div className="flex flex-col h-screen w-screen bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
+      {/* Top Toolbar */}
+      <motion.div
+        className="p-4 bg-white/80 backdrop-blur-md shadow-lg flex justify-center gap-4 items-center flex-wrap rounded-b-2xl"
+        initial={{ y: -80, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ type: "spring", stiffness: 80 }}
+      >
         <select
-          className="border rounded px-3 py-1"
+          className="border border-gray-300 rounded-xl px-4 py-2 text-sm shadow-sm hover:shadow-md transition focus:ring-2 focus:ring-indigo-400 outline-none"
           value={lang}
           onChange={(e) => setLang(e.target.value)}
         >
@@ -77,43 +83,63 @@ const JsPlayground = () => {
           ))}
         </select>
 
-        <button className="px-4 py-1 rounded bg-gray-300 text-gray-600 cursor-not-allowed" disabled>
+        <button
+          className="px-4 py-2 rounded-xl bg-gray-300 text-gray-600 cursor-not-allowed"
+          disabled
+        >
           NULL
         </button>
 
-        <button
-          className="px-4 py-1 rounded bg-blue-500 text-white"
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="px-4 py-2 rounded-xl bg-blue-500 text-white shadow hover:bg-blue-600 transition"
           onClick={handleRun}
         >
           Run Code
-        </button>
+        </motion.button>
 
-        <button
-          className="px-4 py-1 rounded bg-green-600 text-white"
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="px-4 py-2 rounded-xl bg-green-600 text-white shadow hover:bg-green-700 transition"
           onClick={handleSave}
         >
           Save Code
-        </button>
+        </motion.button>
 
-        <button
-          className={`px-4 py-1 rounded ${
-            panelType === "console" ? "bg-indigo-500 text-white" : "bg-gray-200"
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className={`px-4 py-2 rounded-xl shadow transition ${
+            panelType === "console"
+              ? "bg-indigo-500 text-white"
+              : "bg-gray-200 text-gray-700"
           }`}
-          onClick={() => setPanelType(panelType === "console" ? null : "console")}
+          onClick={() =>
+            setPanelType(panelType === "console" ? null : "console")
+          }
         >
           Show Console
-        </button>
+        </motion.button>
 
-        <button
-          className={`px-4 py-1 rounded ${
-            panelType === "terminal" ? "bg-indigo-500 text-white" : "bg-gray-200"
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className={`px-4 py-2 rounded-xl shadow transition ${
+            panelType === "terminal"
+              ? "bg-indigo-500 text-white"
+              : "bg-gray-200 text-gray-700"
           }`}
-          onClick={() => setPanelType(panelType === "terminal" ? null : "terminal")}
+          onClick={() =>
+            setPanelType(panelType === "terminal" ? null : "terminal")
+          }
         >
           Show Terminal
-        </button>
-      </div>
+        </motion.button>
+      </motion.div>
 
+      {/* Main Content */}
       <div className="flex flex-1 relative overflow-hidden">
         <CodeEditor
           code={code}
