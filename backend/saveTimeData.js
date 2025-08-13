@@ -2,13 +2,14 @@
 
 import express, { json } from 'express';
 import { existsSync, mkdirSync } from 'fs';
+const cors = require('cors');
 import { join } from 'path';
 import { createObjectCsvWriter as csvWriter } from 'csv-writer';
 const app = express();
 const PORT = 3001;
 
 app.use(json());
-
+app.use(cors());
 app.post('/save', (req, res) => {
     const { task, duration, timestamp } = req.body;
     const date = new Date(timestamp);

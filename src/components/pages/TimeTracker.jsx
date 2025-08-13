@@ -26,47 +26,43 @@ const TimeTracker = () => {
     const [view, setView] = useState("menu");
     const [task, setTask] = useState("");
     const [duration, setDuration] = useState("");
+    const [date, setDate] = useState(""); // for scheduling future events
     const [entries, setEntries] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     const handleAddTask = async () => {
         if (!task || !duration) return;
 
-        const now = new Date();
-        const timestamp = now.toISOString();
+        const timestamp = date ? new Date(date).toISOString() : new Date().toISOString();
 
         try {
             await axios.post("http://localhost:3001/save", {
-                type: "task",
                 task,
                 duration,
-                timestamp,
+                timestamp
             });
 
             setEntries([...entries, { task, duration, timestamp, type: "task" }]);
             setTask("");
             setDuration("");
+            setDate("");
+            setView("menu");
         } catch (err) {
             console.error("Error saving task:", err);
         }
     };
 
     const loadSchedule = async () => {
-        // Mocking for now; later we’ll fetch from CSV
-        const today = new Date().toISOString();
-        setEntries([
-            {
-                type: "schedule",
-                task: "Morning Workout",
-                duration: "1h",
-                timestamp: today,
-            },
-            {
-                type: "task",
-                task: "Client Meeting",
-                duration: "2h",
-                timestamp: today,
-            },
-        ]);
+        setLoading(true);
+        try {
+            // Fetch actual CSV data from backend (implement endpoint `/data`)
+            const res = await axios.get("http://localhost:3001/data");
+            setEntries(res.data);
+        } catch (err) {
+            console.error("Error fetching schedule:", err);
+        } finally {
+            setLoading(false);
+        }
     };
 
     useEffect(() => {
@@ -76,14 +72,14 @@ const TimeTracker = () => {
     }, [view]);
 
     return (
-        <div className="p-6 max-w-5xl mx-auto text-white">
+        <div className="p-6 max-w-6xl mx-auto text-white">
             {view === "menu" && (
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
                 >
-                    <Card title="Add Task" icon={ICONS.add} onClick={() => setView("add")} />
+                    <Card title="Add Task/Event" icon={ICONS.add} onClick={() => setView("add")} />
                     <Card title="View Schedule" icon={ICONS.calendar} onClick={() => setView("schedule")} />
                     <Card title="Search" icon={ICONS.search} onClick={() => alert("Search coming soon!")} />
                     <Card title="Summary" icon={ICONS.summary} onClick={() => alert("Summary coming soon!")} />
@@ -96,21 +92,27 @@ const TimeTracker = () => {
                     animate={{ opacity: 1, y: 0 }}
                     className="bg-white/10 backdrop-blur-lg p-8 rounded-3xl shadow-xl border border-white/20"
                 >
-                    <h2 className="text-2xl font-bold mb-4">Add Task (Today & Future)</h2>
-                    <div className="flex flex-col md:flex-row gap-4 mb-6">
+                    <h2 className="text-2xl font-bold mb-4">Add Task or Scheduled Event</h2>
+                    <div className="flex flex-col gap-4 mb-6">
                         <input
                             type="text"
-                            placeholder="Task Name"
+                            placeholder="Task / Event Name"
                             value={task}
                             onChange={(e) => setTask(e.target.value)}
-                            className="flex-1 p-4 rounded-xl bg-white/20 text-white placeholder-white focus:outline-none"
+                            className="p-4 rounded-xl bg-white/20 text-white placeholder-white focus:outline-none"
                         />
                         <input
                             type="text"
                             placeholder="Duration (e.g. 1h)"
                             value={duration}
                             onChange={(e) => setDuration(e.target.value)}
-                            className="flex-1 p-4 rounded-xl bg-white/20 text-white placeholder-white focus:outline-none"
+                            className="p-4 rounded-xl bg-white/20 text-white placeholder-white focus:outline-none"
+                        />
+                        <input
+                            type="datetime-local"
+                            value={date}
+                            onChange={(e) => setDate(e.target.value)}
+                            className="p-4 rounded-xl bg-white/20 text-white placeholder-white focus:outline-none"
                         />
                         <button
                             onClick={handleAddTask}
@@ -132,28 +134,30 @@ const TimeTracker = () => {
                     className="bg-white/10 backdrop-blur-lg p-8 rounded-3xl shadow-xl border border-white/20"
                 >
                     <h2 className="text-2xl font-bold mb-4">Monthly Schedule View</h2>
-                    <div className="overflow-auto max-h-96">
-                        <table className="w-full text-white">
-                            <thead className="bg-white/10">
-                                <tr>
-                                    <th className="p-4 text-left">Type</th>
-                                    <th className="p-4 text-left">Task</th>
-                                    <th className="p-4 text-left">Duration</th>
-                                    <th className="p-4 text-left">Date</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {entries.map((entry, index) => (
-                                    <tr key={index} className="hover:bg-white/5 transition">
-                                        <td className="p-4 capitalize">{entry.type}</td>
-                                        <td className="p-4">{entry.task}</td>
-                                        <td className="p-4">{entry.duration}</td>
-                                        <td className="p-4">{new Date(entry.timestamp).toLocaleString()}</td>
+                    {loading ? (
+                        <p>Loading schedule...</p>
+                    ) : (
+                        <div className="overflow-auto max-h-[500px]">
+                            <table className="w-full text-white">
+                                <thead className="bg-white/10 sticky top-0">
+                                    <tr>
+                                        <th className="p-4 text-left">Task/Event</th>
+                                        <th className="p-4 text-left">Duration</th>
+                                        <th className="p-4 text-left">Date & Time</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
+                                </thead>
+                                <tbody>
+                                    {entries.map((entry, index) => (
+                                        <tr key={index} className="hover:bg-white/5 transition">
+                                            <td className="p-4">{entry.task}</td>
+                                            <td className="p-4">{entry.duration}</td>
+                                            <td className="p-4">{new Date(entry.timestamp).toLocaleString()}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
                     <button onClick={() => setView("menu")} className="text-blue-400 underline mt-4">
                         ← Back to Menu
                     </button>
