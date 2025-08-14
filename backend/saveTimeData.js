@@ -1,72 +1,89 @@
 // backend/saveTimeData.js
 
-import express from 'express';
+import express, { json } from 'express';
+import { existsSync, mkdirSync, readdirSync, readFileSync } from 'fs';
 import cors from 'cors';
-import { existsSync, mkdirSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { createObjectCsvWriter as createCsvWriter } from 'csv-writer';
+import { createObjectCsvWriter as csvWriter } from 'csv-writer';
+
+// ESM-compatible __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const app = express();
 const PORT = 3001;
 
-// Fix __dirname in ES modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+app.use(json());
+app.use(cors());
 
-// Middleware
-app.use(express.json());
-
-// Enable CORS for all origins (dev use only)
-app.use(cors({
-    origin: 'http://localhost:5173', // Frontend URL
-    methods: ['GET', 'POST', 'OPTIONS'],
-    allowedHeaders: ['Content-Type'],
-}));
-
-// Routes
+// POST: Save time tracking data
 app.post('/save', (req, res) => {
+    const { task, duration, timestamp } = req.body;
+    const date = new Date(timestamp);
+    const weekNumber = getWeekNumber(date);
+    const month = date.toLocaleString('default', { month: 'long' });
+    const dir = join(__dirname, '../data', month);
+    const filePath = join(dir, `week-${weekNumber}.csv`);
+
+    if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
+
+    const headers = [
+        { id: 'task', title: 'Task' },
+        { id: 'duration', title: 'Duration' },
+        { id: 'timestamp', title: 'Timestamp' },
+    ];
+
+    const writer = csvWriter({
+        path: filePath,
+        header: headers,
+        append: existsSync(filePath),
+    });
+
+    writer.writeRecords([{ task, duration, timestamp }])
+        .then(() => res.status(200).json({ success: true }))
+        .catch((err) => {
+            console.error('CSV Write Error:', err);
+            res.status(500).json({ error: 'Failed to write data' });
+        });
+});
+
+// GET: Fetch all time tracking data
+app.get('/data', (req, res) => {
+    const dataDir = join(__dirname, '../data');
+    if (!existsSync(dataDir)) {
+        return res.json([]); // No data yet
+    }
+
     try {
-        const { task, duration, timestamp } = req.body;
-        if (!task || !duration || !timestamp) {
-            return res.status(400).json({ error: 'Missing required fields' });
-        }
+        const months = readdirSync(dataDir);
+        let allData = [];
 
-        const date = new Date(timestamp);
-        const weekNumber = getWeekNumber(date);
-        const month = date.toLocaleString('default', { month: 'long' });
+        months.forEach(month => {
+            const monthDir = join(dataDir, month);
+            const files = readdirSync(monthDir);
 
-        const dir = join(__dirname, '../data', month);
-        const filePath = join(dir, `week-${weekNumber}.csv`);
-
-        if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
-
-        const headers = [
-            { id: 'task', title: 'Task' },
-            { id: 'duration', title: 'Duration' },
-            { id: 'timestamp', title: 'Timestamp' },
-        ];
-
-        const writer = createCsvWriter({
-            path: filePath,
-            header: headers,
-            append: existsSync(filePath),
+            files.forEach(file => {
+                const filePath = join(monthDir, file);
+                const content = readFileSync(filePath, 'utf-8');
+                const rows = content.split('\n').filter(Boolean);
+                const headers = rows.shift().split(',');
+                rows.forEach(row => {
+                    const values = row.split(',');
+                    let obj = {};
+                    headers.forEach((h, i) => obj[h] = values[i]);
+                    allData.push(obj);
+                });
+            });
         });
 
-        writer.writeRecords([{ task, duration, timestamp }])
-            .then(() => res.status(200).json({ success: true }))
-            .catch((err) => {
-                console.error('CSV Write Error:', err);
-                res.status(500).json({ error: 'Failed to write data' });
-            });
-
+        res.json(allData);
     } catch (err) {
-        console.error('Server Error:', err);
-        res.status(500).json({ error: 'Server error' });
+        console.error('Error reading data:', err);
+        res.status(500).json({ error: 'Failed to read data' });
     }
 });
 
-// Helper: Get week number of year
 function getWeekNumber(d) {
     d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
     const dayNum = d.getUTCDay() || 7;
@@ -75,7 +92,6 @@ function getWeekNumber(d) {
     return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
 }
 
-// Start server
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
