@@ -1,4 +1,19 @@
-Day,Task,StartTime,EndTime
-Monday,Monkewy,14:57,17:57
-Monday,Typing...,10:00,11:00
-Monday,Walking...,06:00,07:00
+Week,Day,Task,StartTime,EndTime,Level,CustomLevel
+Week 1,Wednesday,MonkeyType,09:30,10:30,Default,
+Week 1,Wednesday,ShowAndTell,11:30,12:30,Default,
+Week 2,Wednesday,MonkeyType,09:30,10:30,Default,
+Week 2,Wednesday,ShowAndTell,11:30,12:30,Default,
+Week 3,Wednesday,MonkeyType,09:30,10:30,Default,
+Week 3,Wednesday,ShowAndTell,11:30,12:30,Default,
+Week 4,Wednesday,MonkeyType,09:30,10:30,Default,
+Week 4,Wednesday,ShowAndTell,11:30,12:30,Default,
+Week 5,Wednesday,MonkeyType,09:30,10:30,Default,
+Week 5,Wednesday,ShowAndTell,11:30,12:30,Default,
+Week 2,Monday,MonkeyType,09:30,10:30,Default,
+Week 2,Monday,ShowAndTell,11:30,12:30,Default,
+Week 3,Monday,MonkeyType,09:30,10:30,Default,
+Week 3,Monday,ShowAndTell,11:30,12:30,Default,
+Week 4,Monday,MonkeyType,09:30,10:30,Default,
+Week 4,Monday,ShowAndTell,11:30,12:30,Default,
+Week 5,Monday,MonkeyType,09:30,10:30,Default,
+Week 5,Monday,ShowAndTell,11:30,12:30,Default,
