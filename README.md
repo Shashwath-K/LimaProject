@@ -28,24 +28,28 @@ This project is built as a modern web application and utilizes a component-based
 ## ⚙️ Setup Instructions
 
 1. **Clone the repository**
-   \`\`\`bash
+   ``` bash
    git clone [repository-url]
    cd [project-folder]
-   \`\`\`
+   ```
 
 2. **Install dependencies**
-   \`\`\`bash
+   ``` bash
    npm install
-   # or
+   ```
+   #### or
+   ``` bash
    yarn
-   \`\`\`
+   ```
 
 3. **Run the development server**
-   \`\`\`bash
+   ``` bash
    npm run dev
-   # or
+   ```
+   #### or
+   ``` bash
    yarn dev
-   \`\`\`
+   ```
 
    The application will be accessible at: [http://localhost:5173](http://localhost:5173)
 
@@ -55,10 +59,10 @@ This project is built as a modern web application and utilizes a component-based
 
 The project is organized to promote modularity and maintainability:
 
-\`\`\`
+```
 components/           # Reusable React components like Header.jsx and Footer.jsx
 components/pages/     # Main application pages such as Homepage.jsx
 assets/               # Static assets including images, logos, and fonts
-\`\`\`
+```
 
 This structure allows for easy expansion and management of new tools and features as the project evolves.
