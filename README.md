@@ -1,4 +1,4 @@
-# 💫 Lima Intro Animation
+# Lima Intro Animation
 
 A **dynamic and visually engaging introductory loading screen** for a React web application. Designed to precede the main content, it showcases an animated transformation of the **"Lima" logo**, leaving a polished and memorable first impression.
 
